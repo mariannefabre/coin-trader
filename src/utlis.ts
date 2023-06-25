@@ -1,5 +1,4 @@
-import { TickerPrice, Ticker24hChange} from "./types";
-
+import { TickerPrice, Ticker24hChange, Trade} from "./types";
 
 
 export const fetchTickerPrice = async (
@@ -41,3 +40,29 @@ export const fetchTicker24hChange = async (
     console.log(error);
   }
 };
+
+export const fetchRecentTrades = async (endpoint: string, symbol: { name: string; value: string } ): Promise<Trade[] | undefined> => {
+  const requestUrl = new URL(endpoint);
+  requestUrl.searchParams.append(symbol.name, symbol.value);
+  requestUrl.searchParams.append("limit", "25");
+
+  try {
+    const recentTrades = new Array<Trade>();
+    const response = await fetch(requestUrl);
+    if (response.ok) {
+      const data = await response.json() as Trade[];
+      data.forEach((trade: Trade)=> {
+        recentTrades.push({
+        id: trade.id,
+        price: trade.price,
+        qty: trade.qty,
+        time: trade.time
+      })
+    });
+    return recentTrades;
+  }
+  } catch (error) {
+    console.log(error);
+  }
+
+}

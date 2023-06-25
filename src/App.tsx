@@ -1,62 +1,53 @@
 import { useEffect, useState } from "react";
 import logo from "./logo.png";
 import "./App.css";
-import {
-  AssetPair,
-  ExchangeInfoResponse,
-  Ticker24hChange,
-  TickerPrice,
-} from "./types";
+import { AssetPair, Ticker24hChange, TickerPrice, Trade } from "./types";
 import { Form } from "./Form";
 import { Outputs } from "./Outputs";
-import { fetchTicker24hChange, fetchTickerPrice } from "./utlis";
+import {
+  fetchRecentTrades,
+  fetchTicker24hChange,
+  fetchTickerPrice,
+} from "./utlis";
 
 function App() {
-  const [allPairs, setAllPairs] = useState<AssetPair[]>();
-  const [selectedPair, setSelectedPair] = useState<string>();
+  const [allAssetsPairs, setAllAssetsPairs] = useState<AssetPair[]>();
   const [tickerPrice, setTickerPrice] = useState<TickerPrice>();
   const [ticker24hChange, setTicker24hChange] = useState<Ticker24hChange>();
   const [isDataAvailable, setIsDataAvailable] = useState(true);
+  const [recentTrades, setRecentTrades] = useState<Trade[]>();
 
-  const baseUrl = "https://api1.binance.com";
+  const baseUrl = "https://api3.binance.com";
   const exchangeInfoEndpoint = baseUrl + "/sapi/v1/convert/exchangeInfo";
   const tickerEndpoint = baseUrl + "/api/v3/ticker/price";
   const ticker24hEndpoint = baseUrl + "/api/v3/ticker/24hr";
+  const recentTradesEndpoint = baseUrl + "/api/v3/trades";
 
-  useEffect(() => {
-    const assetPairs = new Array<AssetPair>();
+  const fetchAllAssetPairs = async () => {
     fetch(exchangeInfoEndpoint)
       .then((response) => response.json())
-      .then((data) => {
-        data.forEach((exchange: ExchangeInfoResponse) => {
-          assetPairs.push({
-            fromAsset: exchange.fromAsset,
-            toAsset: exchange.toAsset,
-          } as AssetPair);
-        });
-        setAllPairs(assetPairs);
-      })
+      .then(setAllAssetsPairs)
       .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    fetchAllAssetPairs();
   }, []);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const symbol = event.target.symbol;
 
-    const [tickerPrice, ticker24hChange] = await Promise.all([
+    const [tickerPrice, ticker24hChange, recentTrades] = await Promise.all([
       fetchTickerPrice(tickerEndpoint, symbol),
       fetchTicker24hChange(ticker24hEndpoint, symbol),
+      fetchRecentTrades(recentTradesEndpoint, symbol),
     ]);
 
-    if (!tickerPrice && !ticker24hChange) {
-      setIsDataAvailable(false);
-    } else {
-      setIsDataAvailable(true);
-    }
-
-    setSelectedPair(symbol.value);
+    setIsDataAvailable(Boolean(tickerPrice || ticker24hChange));
     setTickerPrice(tickerPrice);
     setTicker24hChange(ticker24hChange);
+    setRecentTrades(recentTrades);
   };
 
   return (
@@ -66,13 +57,13 @@ function App() {
         <h1>Coin Trader</h1>
       </header>
       <section>
-        <Form assetPairs={allPairs} onSubmit={handleSubmit} />
+        <Form allAssetsPairs={allAssetsPairs} onSubmit={handleSubmit} />
       </section>
       <section>
         <Outputs
-          selectedPair={selectedPair}
           tickerPrice={tickerPrice}
           ticker24hChange={ticker24hChange}
+          recentTrades={recentTrades}
         />
         {!isDataAvailable && <div>Data not available</div>}
       </section>
