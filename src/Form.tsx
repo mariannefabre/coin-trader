@@ -6,19 +6,25 @@ export interface FormProps {
 }
 
 export const Form: React.FC<FormProps> = ({ assetPairs, onSubmit }) => {
+  const optionsList = assetPairs?.map((pair) => {
+    const symbol = pair.fromAsset + pair.toAsset;
+    const value = `${pair.fromAsset}/${pair.toAsset}`;
+
+    return (
+      <option key={symbol} value={symbol}>
+        {value}
+      </option>
+    );
+  });
+
   return (
     <form onSubmit={onSubmit}>
       <label>
-        Currency pair
-        <select name="symbol">
-          {assetPairs &&
-            assetPairs.map((pair) => {
-              const key = `${pair.fromAsset}/${pair.toAsset}`;
-              return <option key={key}>{key}</option>;
-            })}
+        <select name="symbol" defaultValue="1INCH/BTC">
+          {optionsList}
         </select>
       </label>
-      <button type="submit">Ok</button>
+      <button type="submit">Trade</button>
     </form>
   );
 };
