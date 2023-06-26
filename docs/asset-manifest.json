@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/coin-trader/static/css/main.e6c13ad2.css",
+    "main.js": "/coin-trader/static/js/main.adbb0278.js",
+    "static/js/787.135c55d0.chunk.js": "/coin-trader/static/js/787.135c55d0.chunk.js",
+    "static/media/logo.png": "/coin-trader/static/media/logo.06075c5f98176a87f72c.png",
+    "index.html": "/coin-trader/index.html",
+    "main.e6c13ad2.css.map": "/coin-trader/static/css/main.e6c13ad2.css.map",
+    "main.adbb0278.js.map": "/coin-trader/static/js/main.adbb0278.js.map",
+    "787.135c55d0.chunk.js.map": "/coin-trader/static/js/787.135c55d0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.adbb0278.js"
+  ]
+}
