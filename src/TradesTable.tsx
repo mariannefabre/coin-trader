@@ -27,7 +27,7 @@ export const TradesTable: React.FC<TradesTableProps> = ({ trades }) => {
     return (
       <tr key={entry.id}>
         <StyledTableData>{entry.price}</StyledTableData>
-        <StyledTableData>{entry.qty}</StyledTableData>
+        <StyledTableData>{Number(entry.qty)}</StyledTableData>
         <StyledTableData>{date.toTimeString().slice(0, 8)}</StyledTableData>
       </tr>
     );
@@ -132,7 +132,7 @@ const Header = styled.button`
 const StyledTableData = styled.td`
   padding: 4px 26px;
   font-size: 12px;
-  font-family: "Roboto", "Helvetica Neue", Arial, "Noto Sans", sans;
+  text-align: right;
 `;
 
 const StyledCaption = styled.caption`
