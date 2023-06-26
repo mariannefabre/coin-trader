@@ -30,11 +30,14 @@ const StyledForm = styled.form`
   display: flex;
   justify-content: left;
   gap: 8px;
+  color: black;
+  margin-bottom: 28px;
 `;
 
 const StyledSelect = styled.select`
   border: none;
-  font-size: 22px;
+  font-size: 20px;
+  background: none;
 `;
 
 const StyledButton = styled.button`
@@ -42,7 +45,7 @@ const StyledButton = styled.button`
   color: white;
   font-size: 18px;
   margin: 1em;
-  padding: 8px 16px;
+  padding: 10px 16px;
   border: none;
   border-radius: 3px;
   font-weight: bold;

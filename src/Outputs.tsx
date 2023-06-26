@@ -18,22 +18,24 @@ export const Outputs: React.FC<OutputsProps> = ({
   return (
     <div>
       <OutputsContainer>
-        {tickerPrice && (
-          <Output>
-            <StyledLabel>Price</StyledLabel>
-            <StyledResult>{tickerPrice.price}</StyledResult>
-          </Output>
-        )}
-        {ticker24hChange && (
-          <Output>
-            <StyledLabel>24h Change</StyledLabel>
-            <StyledResult>
-              {ticker24hChange.priceChange} {ticker24hChange.priceChangePercent}
-              %
-            </StyledResult>
-          </Output>
-        )}
         {recentTrades && <TradesTable trades={recentTrades} />}
+        <Wrapper>
+          {tickerPrice && (
+            <Output>
+              <StyledLabel>Price</StyledLabel>
+              <StyledResult>{tickerPrice.price}</StyledResult>
+            </Output>
+          )}
+          {ticker24hChange && (
+            <Output>
+              <StyledLabel>24h Change</StyledLabel>
+              <StyledResult>
+                {ticker24hChange.priceChange}{" "}
+                {ticker24hChange.priceChangePercent}%
+              </StyledResult>
+            </Output>
+          )}
+        </Wrapper>
       </OutputsContainer>
     </div>
   );
@@ -42,7 +44,18 @@ export const Outputs: React.FC<OutputsProps> = ({
 const OutputsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 48px;
+  flex-wrap: wrap-reverse;
+  gap: 18px;
+
+  @media (min-width: 512px) {
+    gap: 48px;
+  }
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  gap: inherit;
+  flex-wrap: wrap;
 `;
 
 const Output = styled.div`
@@ -57,7 +70,7 @@ const StyledLabel = styled.label`
 `;
 
 const StyledResult = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   margin-top: 8px;
 `;

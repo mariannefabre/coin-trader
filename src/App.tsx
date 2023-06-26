@@ -93,7 +93,7 @@ const Header = styled.header`
 `;
 
 const Main = styled.main`
-  padding: 0 32px;
+  padding: 0 15vw;
 `;
 
 const InputSection = styled.section``;

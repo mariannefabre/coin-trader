@@ -44,7 +44,7 @@ export const TradesTable: React.FC<TradesTableProps> = ({ trades }) => {
   return (
     <StyledTable>
       <StyledCaption>Market Trades</StyledCaption>
-      <TableHead>
+      <thead>
         <tr>
           <TableHeader>
             <Header type="button" onClick={() => requestSort(Key.price)}>
@@ -65,7 +65,7 @@ export const TradesTable: React.FC<TradesTableProps> = ({ trades }) => {
             </Header>
           </TableHeader>
         </tr>
-      </TableHead>
+      </thead>
       <tbody>{sortedEntries}</tbody>
     </StyledTable>
   );
@@ -111,9 +111,12 @@ const useSortableData = (entries: Trade[], config = null) => {
 const StyledTable = styled.table`
   background-color: #fafafa;
   padding: 22px;
-`;
+  border-spacing: 10px 0px;
 
-const TableHead = styled.thead``;
+  @media (min-width: 512px) {
+    border-spacing: 24px 0px;
+  }
+`;
 
 const TableHeader = styled.th`
   text-align: right;
@@ -130,16 +133,20 @@ const Header = styled.button`
 `;
 
 const StyledTableData = styled.td`
-  padding: 4px 26px;
+  padding: 4px 0px;
   font-size: 12px;
   text-align: right;
 `;
 
 const StyledCaption = styled.caption`
   background-color: #fafafa;
-  font-size: 24px;
+  font-size: 26px;
   color: rgb(240, 185, 11);
   font-weight: bold;
   text-align: left;
-  padding: 24px 0 0 26px;
+  padding: 28px 26px 0 38px;
+
+  @media (min-width: 512px) {
+    padding: 28px 26px 0 52px;
+  }
 `;
