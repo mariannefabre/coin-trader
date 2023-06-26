@@ -119,7 +119,6 @@ const StyledTable = styled.table`
 `;
 
 const TableHeader = styled.th`
-  text-align: right;
   padding: 0;
 `;
 
@@ -128,7 +127,6 @@ const Header = styled.button`
   background: none;
   color: rgb(159, 159, 159);
   font-size: 12px;
-  text-align: right;
   padding: 6px 26px;
 `;
 
