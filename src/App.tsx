@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import logo from "./logo.png";
-import "./App.css";
-import { AssetPair, Ticker24hChange, TickerPrice, Trade } from "./types";
+import styled from "styled-components";
+
 import { Form } from "./Form";
+import logo from "./logo.png";
 import { Outputs } from "./Outputs";
+import { AssetPair, Ticker24hChange, TickerPrice, Trade } from "./types";
 import {
   fetchRecentTrades,
   fetchTicker24hChange,
@@ -51,24 +52,48 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <AppContainer>
+      <Header>
+        <img src={logo} alt="logo" height={56} />
         <h1>Coin Trader</h1>
-      </header>
-      <section>
-        <Form allAssetsPairs={allAssetsPairs} onSubmit={handleSubmit} />
-      </section>
-      <section>
-        <Outputs
-          tickerPrice={tickerPrice}
-          ticker24hChange={ticker24hChange}
-          recentTrades={recentTrades}
-        />
-        {!isDataAvailable && <div>Data not available</div>}
-      </section>
-    </div>
+      </Header>
+      <Main>
+        <InputSection>
+          <Form allAssetsPairs={allAssetsPairs} onSubmit={handleSubmit} />
+        </InputSection>
+        <div>
+          <Outputs
+            tickerPrice={tickerPrice}
+            ticker24hChange={ticker24hChange}
+            recentTrades={recentTrades}
+          />
+          {!isDataAvailable && <div>Data not available</div>}
+        </div>
+      </Main>
+    </AppContainer>
   );
 }
 
 export default App;
+
+const AppContainer = styled.div`
+  text-align: center;
+  background-color: #ffffff;
+  color: rgb(35, 39, 47);
+`;
+
+const Header = styled.header`
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 22px 32px;
+  font-size: calc(10px + 1vmin);
+  color: rgb(240, 185, 11);
+  font-family: "Gill Sans", sans-serif;
+`;
+
+const Main = styled.main`
+  padding: 0 32px;
+`;
+
+const InputSection = styled.section``;

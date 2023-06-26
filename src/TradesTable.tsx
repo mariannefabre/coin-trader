@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Trade } from "./types";
+import { styled } from "styled-components";
 
 interface TradesTableProps {
   trades: Trade[];
@@ -19,48 +20,62 @@ type SortConfig = {
 };
 
 export const TradesTable: React.FC<TradesTableProps> = ({ trades }) => {
-  const { entries, requestSort } = useSortableData(trades);
+  const { entries, requestSort, sortConfig } = useSortableData(trades);
 
   const sortedEntries = entries?.map((entry) => {
     const date = new Date(entry.time);
     return (
       <tr key={entry.id}>
-        <td>{entry.price}</td>
-        <td>{entry.qty}</td>
-        <td>{date.toTimeString().slice(0, 8)}</td>
+        <StyledTableData>{entry.price}</StyledTableData>
+        <StyledTableData>{entry.qty}</StyledTableData>
+        <StyledTableData>{date.toTimeString().slice(0, 8)}</StyledTableData>
       </tr>
     );
   });
 
+  const displayArrow = (key: Key): string | undefined => {
+    return sortConfig?.key === key
+      ? sortConfig.direction === Direction.ascending
+        ? "▲"
+        : "▼"
+      : undefined;
+  };
+
   return (
-    <table>
-      <caption>Market Trades</caption>
-      <thead>
+    <StyledTable>
+      <StyledCaption>Market Trades</StyledCaption>
+      <TableHead>
         <tr>
-          <th>
-            <button type="button" onClick={() => requestSort(Key.price)}>
+          <TableHeader>
+            <Header type="button" onClick={() => requestSort(Key.price)}>
               Price
-            </button>
-          </th>
-          <th>
-            <button type="button" onClick={() => requestSort(Key.qty)}>
+              {displayArrow(Key.price)}
+            </Header>
+          </TableHeader>
+          <TableHeader>
+            <Header type="button" onClick={() => requestSort(Key.qty)}>
               Amount
-            </button>
-          </th>
-          <th>
-            <button type="button" onClick={() => requestSort(Key.time)}>
+              {displayArrow(Key.qty)}
+            </Header>
+          </TableHeader>
+          <TableHeader>
+            <Header type="button" onClick={() => requestSort(Key.time)}>
               Time
-            </button>
-          </th>
+              {displayArrow(Key.time)}
+            </Header>
+          </TableHeader>
         </tr>
-      </thead>
+      </TableHead>
       <tbody>{sortedEntries}</tbody>
-    </table>
+    </StyledTable>
   );
 };
 
-const useSortableData = (entries: any, config = null) => {
-  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+const useSortableData = (entries: Trade[], config = null) => {
+  const [sortConfig, setSortConfig] = useState<SortConfig | null>({
+    key: Key.time,
+    direction: Direction.ascending,
+  });
 
   const sortedEntries = useMemo(() => {
     let sortableEntries = [...entries];
@@ -92,3 +107,39 @@ const useSortableData = (entries: any, config = null) => {
 
   return { entries: sortedEntries, requestSort, sortConfig };
 };
+
+const StyledTable = styled.table`
+  background-color: #fafafa;
+  padding: 22px;
+`;
+
+const TableHead = styled.thead``;
+
+const TableHeader = styled.th`
+  text-align: right;
+  padding: 0;
+`;
+
+const Header = styled.button`
+  border: none;
+  background: none;
+  color: rgb(159, 159, 159);
+  font-size: 12px;
+  text-align: right;
+  padding: 6px 26px;
+`;
+
+const StyledTableData = styled.td`
+  padding: 4px 26px;
+  font-size: 12px;
+  font-family: "Roboto", "Helvetica Neue", Arial, "Noto Sans", sans;
+`;
+
+const StyledCaption = styled.caption`
+  background-color: #fafafa;
+  font-size: 24px;
+  color: rgb(240, 185, 11);
+  font-weight: bold;
+  text-align: left;
+  padding: 24px 0 0 26px;
+`;
