@@ -28,8 +28,8 @@ export const Outputs: React.FC<OutputsProps> = ({
           <Output>
             <StyledLabel>24h Change</StyledLabel>
             <StyledResult>
-              {ticker24hChange.priceChange} +{" "}
-              {ticker24hChange.priceChangePercent} %
+              {ticker24hChange.priceChange} {ticker24hChange.priceChangePercent}
+              %
             </StyledResult>
           </Output>
         )}
